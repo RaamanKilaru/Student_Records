@@ -1,19 +1,35 @@
 package com.example.studentrecords;
 
+import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
+
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link EnrollFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EnrollFragment extends Fragment {
+public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -46,6 +62,9 @@ public class EnrollFragment extends Fragment {
         return fragment;
     }
 
+    EditText roll_no, name, standard, dob;
+    ImageButton calendar_btn;
+    Button addbtn;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,10 +74,46 @@ public class EnrollFragment extends Fragment {
         }
     }
 
+    private void showDatePickerDialog(){
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                getView().getContext(),
+                this,
+                Calendar.getInstance().get(Calendar.YEAR),
+                Calendar.getInstance().get(Calendar.MONTH),
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+        );
+        datePickerDialog.show();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_enroll, container, false);
+        View v = inflater.inflate(R.layout.fragment_enroll, container, false);
+        roll_no = (EditText) v.findViewById(R.id.roll_no);
+        name = (EditText) v.findViewById(R.id.name);
+        standard = (EditText) v.findViewById(R.id.standard);
+        dob = (EditText) v.findViewById(R.id.d_o_b);
+        calendar_btn = (ImageButton) v.findViewById(R.id.calendar_btn);
+        addbtn = (Button) v.findViewById(R.id.add);
+            dob.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showDatePickerDialog();
+                }
+            });
+            calendar_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showDatePickerDialog();
+                }
+            });
+        return v;
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        String date = dayOfMonth + "/" + (month+1) + "/" + year;
+        dob.setText(date);
     }
 }

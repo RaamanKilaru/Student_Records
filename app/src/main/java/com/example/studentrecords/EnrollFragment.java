@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.io.FileDescriptor;
@@ -65,6 +67,9 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
     EditText roll_no, name, standard, dob;
     ImageButton calendar_btn;
     Button addbtn;
+    RadioGroup radiogroup;
+    RadioButton selected_gender;
+    String gender;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +97,9 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
         View v = inflater.inflate(R.layout.fragment_enroll, container, false);
         roll_no = (EditText) v.findViewById(R.id.roll_no);
         name = (EditText) v.findViewById(R.id.name);
+        radiogroup = (RadioGroup) v.findViewById(R.id.radioGroup);
+        selected_gender = (RadioButton) v.findViewById(radiogroup.getCheckedRadioButtonId());
+        gender = selected_gender.getText().toString();
         standard = (EditText) v.findViewById(R.id.standard);
         dob = (EditText) v.findViewById(R.id.d_o_b);
         calendar_btn = (ImageButton) v.findViewById(R.id.calendar_btn);

@@ -13,8 +13,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100sp"
+        android:layout_marginTop="50sp"
         android:textSize="15sp"
+        android:textColor="#000"
         android:text="@string/roll_number"/>
     <EditText
         android:id="@+id/roll_no"
@@ -29,6 +30,7 @@
     <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:textColor="#000"
     android:layout_marginTop="15sp"
     android:textSize="15sp"
     android:text="@string/name"/>
@@ -41,9 +43,52 @@
         android:hint="@string/enter_your_name"
         tools:ignore="MissingConstraints" />
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15sp"
+        android:textColor="#000"
+        android:textSize="15sp"
+        android:text="@string/gender"/>
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvRg"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:showDividers="beginning|middle|end"
+        android:layout_marginTop="10dp"
+        android:id="@+id/radioGroup" >
+
+        <RadioButton
+            android:id="@+id/rb1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40sp"
+            android:text="@string/male"
+            android:checked="false" />
+
+        <RadioButton
+            android:id="@+id/rb2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40sp"
+            android:text="@string/female"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/rb3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40sp"
+            android:text="@string/other"
+            android:checked="false" />
+
+    </RadioGroup>
+    <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:textSize="15sp"
+    android:textColor="#000"
     android:layout_marginTop="15sp"
     android:text="@string/standard"/>
 
@@ -59,13 +104,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15sp"
+        android:textColor="#000"
         android:layout_marginTop="15sp"
         android:text="@string/date_of_birth" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+        android:orientation="horizontal" >
 
         <EditText
             android:id="@+id/d_o_b"

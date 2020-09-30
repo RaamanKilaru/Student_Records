@@ -19,6 +19,16 @@
             </intent-filter>
         </activity>
 
+        <!-- Should not register reciever explicitly because ACTION_SCREEN_OFF and ACTION_SCREEN_ON
+             Broadcasts will not be recieved by the reciever. So, we have to register it dynamically
+             using registerReciever() method.
+        <receiver android:name=".Broadcast_receiver">
+        <intent-filter>
+            <action android:name="android.intent.action.SCREEN_OFF"/>
+            <action android:name="android.intent.action.SCREEN_ON"/>
+        </intent-filter>
+        </receiver> -->
+
     </application>
 
 </manifest>

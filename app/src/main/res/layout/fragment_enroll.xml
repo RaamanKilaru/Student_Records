@@ -142,25 +142,27 @@
             android:text="@string/upload_picture" />
 
         <ImageView
+            android:id="@+id/image_view"
             android:layout_width="150sp"
             android:layout_height="150sp"
-            android:id="@+id/image_view"
-            android:clickable="true"
-            android:layout_marginTop="15sp"
             android:layout_marginLeft="60sp"
-            android:background="#E0D6E4"
+            android:layout_marginTop="15sp"
+            android:background="#DAD4D4"
+            android:clickable="true"
             app:srcCompat="@android:drawable/ic_menu_gallery"
             tools:srcCompat="@tools:sample/avatars" />
     </LinearLayout>
+
     <Button
         android:id="@+id/add"
         android:layout_width="140dp"
         android:layout_height="60sp"
-        android:text="@string/add"
-        android:layout_marginTop="20sp"
+        android:layout_marginStart="125sp"
         android:layout_marginLeft="130sp"
-        android:theme="@style/Widget.AppCompat.Button.Colored"
-        android:layout_marginStart="125sp" />
+        android:layout_marginTop="20sp"
+        android:background="#FFFFFF"
+        android:text="@string/add"
+        android:theme="@style/Theme.MaterialComponents.Light" />
 
 </LinearLayout>
 

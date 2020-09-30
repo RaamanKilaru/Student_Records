@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -131,7 +132,13 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
                 startActivityForResult(intent1,0);
             }
         });
-
+        //ADD button onClick
+        addbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(),"Successful!!",Toast.LENGTH_LONG).show();
+            }
+        });
 
         return v;
     }

@@ -13,7 +13,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50sp"
+        android:layout_marginTop="20sp"
         android:textSize="15sp"
         android:textColor="#000"
         android:text="@string/roll_number"/>
@@ -23,17 +23,15 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/enter_roll_no"
-        android:inputType="number"
-        tools:ignore="MissingConstraints">
-        <requestFocus />
-    </EditText>
+            android:inputType="number"
+        tools:ignore="MissingConstraints"/>
     <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textColor="#000"
-    android:layout_marginTop="15sp"
-    android:textSize="15sp"
-    android:text="@string/name"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:layout_marginTop="15sp"
+        android:textSize="15sp"
+        android:text="@string/name"/>
     <EditText
         android:id="@+id/name"
         android:layout_width="match_parent"
@@ -65,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40sp"
             android:text="@string/male"
-            android:checked="false" />
+            android:checked="true" />
 
         <RadioButton
             android:id="@+id/rb2"
@@ -73,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40sp"
             android:text="@string/female"
-            android:checked="true" />
+            android:checked="false" />
 
         <RadioButton
             android:id="@+id/rb3"
@@ -85,12 +83,12 @@
 
     </RadioGroup>
     <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textSize="15sp"
-    android:textColor="#000"
-    android:layout_marginTop="15sp"
-    android:text="@string/standard"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:textColor="#000"
+        android:layout_marginTop="15sp"
+        android:text="@string/standard"/>
 
     <EditText
         android:id="@+id/standard"
@@ -130,18 +128,48 @@
             android:src="@android:drawable/ic_menu_my_calendar" />
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints"
+        android:orientation="horizontal" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="#000"
+            android:layout_marginTop="15sp"
+            android:text="@string/upload_picture" />
 
+        <ImageView
+            android:layout_width="150sp"
+            android:layout_height="150sp"
+            android:id="@+id/image_view"
+            android:clickable="true"
+            android:layout_marginTop="15sp"
+            android:layout_marginLeft="60sp"
+            android:background="#E0D6E4"
+            app:srcCompat="@android:drawable/ic_menu_gallery"
+            tools:srcCompat="@tools:sample/avatars" />
+    </LinearLayout>
     <Button
         android:id="@+id/add"
         android:layout_width="140dp"
         android:layout_height="60sp"
         android:text="@string/add"
-        android:layout_marginTop="50sp"
-        android:layout_marginLeft="125sp"
+        android:layout_marginTop="20sp"
+        android:layout_marginLeft="130sp"
         android:theme="@style/Widget.AppCompat.Button.Colored"
         android:layout_marginStart="125sp" />
 
 </LinearLayout>
+
+
+
+
+
+
+
 <!--
     <LinearLayout
         android:layout_width="match_parent"

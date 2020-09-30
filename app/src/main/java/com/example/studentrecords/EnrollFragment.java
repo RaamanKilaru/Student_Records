@@ -2,6 +2,7 @@ package com.example.studentrecords;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -70,6 +73,7 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
     RadioGroup radiogroup;
     RadioButton selected_gender;
     String gender;
+    ImageView imageview;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,20 +106,33 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
         gender = selected_gender.getText().toString();
         standard = (EditText) v.findViewById(R.id.standard);
         dob = (EditText) v.findViewById(R.id.d_o_b);
+        imageview = (ImageView) v.findViewById(R.id.image_view);
         calendar_btn = (ImageButton) v.findViewById(R.id.calendar_btn);
         addbtn = (Button) v.findViewById(R.id.add);
-            dob.setOnClickListener(new View.OnClickListener() {
+        //setOnClickListener for DatePickerDialog.
+        dob.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showDatePickerDialog();
                 }
             });
-            calendar_btn.setOnClickListener(new View.OnClickListener() {
+        calendar_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showDatePickerDialog();
                 }
             });
+
+        //setOnClickListener for Image capture and view it in ImageView.
+        imageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent1,0);
+            }
+        });
+
+
         return v;
     }
 
@@ -123,5 +140,12 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         String date = dayOfMonth + "/" + (month+1) + "/" + year;
         dob.setText(date);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+        imageview.setImageBitmap(bitmap);
     }
 }

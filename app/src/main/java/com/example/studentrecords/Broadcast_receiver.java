@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.google.android.material.tabs.TabLayout;
 import java.util.Random;
@@ -12,11 +13,11 @@ import java.util.Random;
 
 public class Broadcast_receiver extends BroadcastReceiver {
 
-    private TabLayout tabLayout;
+    private LinearLayout linearLayout;
 
-    public Broadcast_receiver(TabLayout tabLayout){
-        if (tabLayout != null){
-            this.tabLayout = tabLayout;
+    public Broadcast_receiver(LinearLayout linearLayout){
+        if (linearLayout != null){
+            this.linearLayout = linearLayout;
             Log.i("SCREEN","Reciever Initialized.");
         }
     }
@@ -27,7 +28,7 @@ public class Broadcast_receiver extends BroadcastReceiver {
            // Log.i("SCREEN_ON","Got screen ON Intent.");
             //Toast.makeText(context, "Screen ON",Toast.LENGTH_LONG).show();
             Random random = new Random();
-            tabLayout.setBackgroundColor(Color.argb(
+            linearLayout.setBackgroundColor(Color.argb(
                    100 ,
                     random.nextInt(256) ,
                     random.nextInt(256) ,

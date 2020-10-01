@@ -2,8 +2,6 @@ package com.example.studentrecords;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import com.google.android.material.tabs.TabLayout;
@@ -13,7 +11,6 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabslayout;
     ViewPager viewpager;
     PagerAdapter pageradapter;
-    Broadcast_receiver tablayout;
     private static final String TAG = "myActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +53,6 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-
-        //To change TabLayout background for every Intent.ACTION_SCREEN_ON.
-        tablayout = new Broadcast_receiver(tabslayout);
-        registerReceiver(tablayout, new IntentFilter(Intent.ACTION_SCREEN_ON));
-        registerReceiver(tablayout, new IntentFilter(Intent.ACTION_SCREEN_OFF));
 
     }
 }

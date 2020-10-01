@@ -42,7 +42,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:id="@+id/search_tab"
-          android:text="@string/search_tab"/>
+          android:text="@string/view"/>
 
    </com.google.android.material.tabs.TabLayout>
 

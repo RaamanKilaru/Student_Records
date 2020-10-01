@@ -2,31 +2,25 @@ package com.example.studentrecords;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
-
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-
 import com.google.android.material.tabs.TabLayout;
+
 
 public class MainActivity extends AppCompatActivity {
     TabLayout tabslayout;
     ViewPager viewpager;
     PagerAdapter pageradapter;
-    Broadcast_receiver tab_color_receiver;
+    Broadcast_receiver tablayout;
     private static final String TAG = "myActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Log.i(TAG,"Inside oncreate() of Activity.");
+        Log.i(TAG, "Inside oncreate() of Activity.");
 
         tabslayout = (TabLayout) findViewById(R.id.tabslayout);
 
@@ -64,14 +58,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //To change TabLayout background for every Intent.ACTION_SCREEN_ON.
-        tab_color_receiver = new Broadcast_receiver(tabslayout);
-        registerReceiver(tab_color_receiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
-        registerReceiver(tab_color_receiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
+        tablayout = new Broadcast_receiver(tabslayout);
+        registerReceiver(tablayout, new IntentFilter(Intent.ACTION_SCREEN_ON));
+        registerReceiver(tablayout, new IntentFilter(Intent.ACTION_SCREEN_OFF));
 
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 }

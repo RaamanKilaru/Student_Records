@@ -23,17 +23,15 @@ public class Broadcast_receiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-            Log.i("SCREEN_OFF","Got screen Off Intent.");
-            Toast.makeText(context, "Screen OFF",Toast.LENGTH_LONG).show();
-        } else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
-            Log.i("SCREEN_ON","Got screen ON Intent.");
-            Toast.makeText(context, "Screen ON",Toast.LENGTH_LONG).show();
+        if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
+           // Log.i("SCREEN_ON","Got screen ON Intent.");
+            //Toast.makeText(context, "Screen ON",Toast.LENGTH_LONG).show();
             Random random = new Random();
-            tabLayout.setBackgroundColor(Color.argb(255,
-                    random.nextInt(256),
-                    random.nextInt(256),
-                    random.nextInt(256)));
+            tabLayout.setBackgroundColor(Color.argb(
+                   100 ,
+                    random.nextInt(256) ,
+                    random.nextInt(256) ,
+                    random.nextInt(256)  ) );
         }
     }
 }

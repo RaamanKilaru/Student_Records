@@ -10,26 +10,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#000"
         android:layout_marginTop="20sp"
-        android:textSize="15sp"
-        android:textColor="#000"
-        android:text="@string/roll_number"/>
-    <EditText
-        android:id="@+id/roll_no"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/enter_roll_no"
-            android:inputType="number"
-        tools:ignore="MissingConstraints"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#000"
-        android:layout_marginTop="15sp"
         android:textSize="15sp"
         android:text="@string/name"/>
     <EditText
@@ -40,6 +26,21 @@
         android:inputType="text"
         android:hint="@string/enter_your_name"
         tools:ignore="MissingConstraints" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15sp"
+        android:textSize="15sp"
+        android:textColor="#000"
+        android:text="@string/roll_number"/>
+    <EditText
+        android:id="@+id/roll_no"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/enter_roll_no"
+        android:inputType="number"
+        tools:ignore="MissingConstraints"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -88,16 +89,14 @@
         android:textSize="15sp"
         android:textColor="#000"
         android:layout_marginTop="15sp"
-        android:text="@string/standard"/>
+        android:text="@string/qualification"/>
 
-    <EditText
-        android:id="@+id/standard"
+    <Spinner
+        android:id="@+id/qualifications"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/enter_standard"
-        android:inputType="number"
-        tools:ignore="MissingConstraints" />
+        android:textAlignment="center"
+        android:gravity="center_horizontal" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -165,94 +164,3 @@
         android:theme="@style/Theme.MaterialComponents.Light" />
 
 </LinearLayout>
-
-
-
-
-
-
-
-<!--
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60sp"
-        tools:ignore="MissingConstraints">
-
-        <Button
-            android:id="@+id/addbtn"
-            android:layout_width="140dp"
-            android:layout_height="60sp"
-            android:text="@string/add"
-            tools:ignore="ButtonStyle" />
-
-        <Button
-            android:id="@+id/deletebtn"
-            android:layout_width="140dp"
-            android:layout_height="60sp"
-            android:text="@string/delete"
-            tools:ignore="ButtonStyle" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60sp"
-        tools:ignore="MissingConstraints">
-
-        <Button
-            android:id="@+id/modifybtn"
-            android:layout_width="140dp"
-            android:layout_height="60sp"
-            android:text="@string/modify"
-            tools:ignore="ButtonStyle" />
-
-        <Button
-            android:id="@+id/viewbtn"
-            android:layout_width="140dp"
-            android:layout_height="60sp"
-            android:text="@string/view"
-            tools:ignore="ButtonStyle" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.74"
-        tools:ignore="MissingConstraints">
-
-        <Button
-            android:id="@+id/viewallbtn"
-            android:layout_width="140dp"
-            android:layout_height="60sp"
-            android:text="@string/view_all"
-            tools:ignore="ButtonStyle" />
-
-        <Button
-            android:id="@+id/showbtn"
-            android:layout_width="140dp"
-            android:layout_height="60sp"
-            android:text="@string/show"
-            android:theme="@style/CardView.Light"
-            tools:ignore="ButtonStyle" />
-
-    </LinearLayout>
-
-</LinearLayout>-->
-
-<!--<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".EnrollFragment">
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/NAME" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>-->

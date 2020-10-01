@@ -2,19 +2,19 @@ package com.example.studentrecords;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -22,20 +22,16 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
+import android.widget.Spinner;
 import android.widget.Toast;
-
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link EnrollFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
+public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateSetListener, OnItemSelectedListener{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,11 +66,15 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
 
     EditText roll_no, name, standard, dob;
     ImageButton calendar_btn;
-    Button addbtn;
+    Button addbutton;
     RadioGroup radiogroup;
     RadioButton selected_gender;
-    String gender;
+    String gender,qualification;
     ImageView imageview;
+    Spinner spinner;
+    ArrayAdapter<CharSequence> adapter;
+    Broadcast_receiver fragment_layout;
+    DatabaseHelper myDB;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,16 +100,32 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_enroll, container, false);
-        roll_no = (EditText) v.findViewById(R.id.roll_no);
         name = (EditText) v.findViewById(R.id.name);
+        roll_no = (EditText) v.findViewById(R.id.roll_no);
         radiogroup = (RadioGroup) v.findViewById(R.id.radioGroup);
         selected_gender = (RadioButton) v.findViewById(radiogroup.getCheckedRadioButtonId());
         gender = selected_gender.getText().toString();
-        standard = (EditText) v.findViewById(R.id.standard);
+        myDB = new DatabaseHelper(v.getContext());
+
+
+        //Spinner for Qualifications.
+        spinner = (Spinner) v.findViewById(R.id.qualifications);
+        //Log.i("SAI","After Spinner description.");
+        adapter = ArrayAdapter.createFromResource(
+                getContext(),
+                R.array.qualifications,
+                android.R.layout.simple_spinner_item);
+        //Log.i("SAI","After Adapter description.");
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //Log.i("SAI","After Setting Dropdown.");
+        spinner.setAdapter(adapter);
+        //Log.i("SAI","After attaching adapter to spinner.");
+        spinner.setOnItemSelectedListener(this);
+
         dob = (EditText) v.findViewById(R.id.d_o_b);
         imageview = (ImageView) v.findViewById(R.id.image_view);
         calendar_btn = (ImageButton) v.findViewById(R.id.calendar_btn);
-        addbtn = (Button) v.findViewById(R.id.add);
+        addbutton = (Button) v.findViewById(R.id.add);
         //setOnClickListener for DatePickerDialog.
         dob.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -132,14 +148,40 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
                 startActivityForResult(intent1,0);
             }
         });
-        //ADD button onClick
-        addbtn.setOnClickListener(new View.OnClickListener() {
+
+        //ADD button onClick to save the information to SQLite DB.
+        addbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(),"Successful!!",Toast.LENGTH_LONG).show();
+                Log.i("SAI","Inside onClick of ADDBTN.");
+                if ((name.length() == 0) || (roll_no.length() == 0) || (gender.length() == 0) || (qualification.length() == 0) || (dob.length() == 0)) {
+                    Log.i("SAI","Left something unfilled.");
+                    Toast.makeText(v.getContext(), "Sorry, You have fill all the Fields. ", Toast.LENGTH_LONG).show();
+                    Log.i("SAI","Toast for partial Filling.");
+                } else {
+                    if(myDB.addData(
+                            name.getText().toString(),
+                            roll_no.getText().toString(),
+                            gender, qualification,
+                            dob.getText().toString() )) {
+                        Log.i("SAI","Toast for successful insert.");
+                        Toast.makeText(v.getContext(), "Successful!!", Toast.LENGTH_LONG).show();
+                    }else {
+                        Log.i("SAI","Toast for something went wrong during insert.");
+                        Toast.makeText(v.getContext(), "Sorry Something went wrong :(", Toast.LENGTH_LONG).show();
+                    }
+                }
             }
         });
 
+
+       /* //To change TabLayout background for every Intent.ACTION_SCREEN_ON.
+        fragment_layout = new Broadcast_receiver();
+        registerReceiver(fragment_layout, new IntentFilter(Intent.ACTION_SCREEN_ON));
+        registerReceiver(fragment_layout, new IntentFilter(Intent.ACTION_SCREEN_OFF));*/
+
+
+        //Return the view.
         return v;
     }
 
@@ -155,4 +197,20 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
         Bitmap bitmap = (Bitmap) data.getExtras().get("data");
         imageview.setImageBitmap(bitmap);
     }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        this.qualification = parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+/*
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        qualification = parent.getItemAtPosition(position).toString();
+    }*/
+
 }

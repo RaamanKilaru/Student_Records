@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -26,6 +27,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 import java.util.Calendar;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,18 +67,19 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
         return fragment;
     }
 
-    EditText roll_no, name, standard, dob;
-    ImageButton calendar_btn;
-    Button addbutton;
-    RadioGroup radiogroup;
-    RadioButton selected_gender;
-    String gender,qualification;
-    ImageView imageview;
-    Spinner spinner;
-    ArrayAdapter<CharSequence> adapter;
-    Broadcast_receiver b_reciever;
-    DatabaseHelper myDB;
-    LinearLayout fragment_layout;
+    private EditText roll_no, name, dob;
+    private ImageButton calendar_btn;
+    private Button addbutton;
+    private RadioGroup radiogroup;
+    private RadioButton selected_gender;
+    private String gender,qualification;
+    private ImageView imageview;
+    private Spinner spinner;
+    private ArrayAdapter<CharSequence> adapter;
+    private Broadcast_receiver b_reciever;
+    private DatabaseHelper myDB;
+    private View v;
+    private LinearLayout fragment_layout;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,16 +101,14 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_enroll, container, false);
+        v = inflater.inflate(R.layout.fragment_enroll, container, false);
         fragment_layout = (LinearLayout) v.findViewById(R.id.enroll_frag);
         name = (EditText) v.findViewById(R.id.name);
+        imageview = (ImageView) v.findViewById(R.id.image_view);
         roll_no = (EditText) v.findViewById(R.id.roll_no);
         radiogroup = (RadioGroup) v.findViewById(R.id.radioGroup);
-        selected_gender = (RadioButton) v.findViewById(radiogroup.getCheckedRadioButtonId());
-        gender = selected_gender.getText().toString();
         myDB = new DatabaseHelper(v.getContext());
 
 
@@ -124,7 +125,7 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
         dob = (EditText) v.findViewById(R.id.d_o_b);
         imageview = (ImageView) v.findViewById(R.id.image_view);
         calendar_btn = (ImageButton) v.findViewById(R.id.calendar_btn);
-        addbutton = (Button) v.findViewById(R.id.add);
+        addbutton = v.findViewById(R.id.add);
 
         //setOnClickListener for DatePickerDialog.
         dob.setOnClickListener(new View.OnClickListener() {
@@ -152,23 +153,33 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
         //ADD button onClick to save the information to SQLite DB.
         addbutton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Log.i("SAI",qualification);
-                if ((name.length() == 0) || (roll_no.length() == 0) || (gender.length() == 0) || (qualification.equals("Select")) || (dob.length() == 0)) {
-                    Log.i("SAI","Left something unfilled.");
-                    Toast.makeText(v.getContext(), "Sorry, You have to fill all the Fields. ", Toast.LENGTH_LONG).show();
-                    Log.i("SAI","Toast for partial Filling.");
+            public void onClick(View vi) {
+                selected_gender = (RadioButton) v.findViewById(radiogroup.getCheckedRadioButtonId());
+                if (
+                        (name.length() == 0) ||
+                        (roll_no.length() == 0) ||
+                        (radiogroup.getCheckedRadioButtonId() == -1) ||
+                        (qualification.equals("Select")) ||
+                        (dob.length() == 0)
+                ) {
+                    Toast.makeText(vi.getContext(), "Sorry, You have to fill all the Fields. ", Toast.LENGTH_LONG).show();
                 } else {
-                    if(myDB.addData(
+                    if(
+                            myDB.addData(
                             name.getText().toString(),
                             roll_no.getText().toString(),
                             gender, qualification,
-                            dob.getText().toString() )) {
-                        Log.i("SAI","Toast for successful insert.");
-                        Toast.makeText(v.getContext(), "Successful!!", Toast.LENGTH_LONG).show();
+                            dob.getText().toString() )
+                    ) {
+                        name.setText("");
+                        roll_no.setText("");
+                        spinner.setSelection(0);
+                        dob.setText("");
+                        imageview.setImageBitmap(null);
+                        imageview.setBackgroundResource(R.drawable.ic_launcher_foreground);
+                        Toast.makeText(vi.getContext(), "Successful!!", Toast.LENGTH_LONG).show();
                     }else {
-                        Log.i("SAI","Toast for something went wrong during insert.");
-                        Toast.makeText(v.getContext(), "Sorry Something went wrong :(", Toast.LENGTH_LONG).show();
+                        Toast.makeText(vi.getContext(), "Sorry Something went wrong :(", Toast.LENGTH_LONG).show();
                     }
                 }
             }

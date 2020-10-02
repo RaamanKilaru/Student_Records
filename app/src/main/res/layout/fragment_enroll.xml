@@ -48,14 +48,14 @@
         android:textColor="#000"
         android:textSize="15sp"
         android:text="@string/gender"/>
+
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvRg"
-        android:layout_centerHorizontal="true"
         android:orientation="horizontal"
         android:showDividers="beginning|middle|end"
         android:layout_marginTop="10dp"
+        android:checkedButton="@id/rb1"
         android:id="@+id/radioGroup" >
 
         <RadioButton
@@ -63,26 +63,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40sp"
-            android:text="@string/male"
-            android:checked="true" />
+            android:text="@string/male" />
 
         <RadioButton
             android:id="@+id/rb2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40sp"
-            android:text="@string/female"
-            android:checked="false" />
+            android:text="@string/female" />
 
         <RadioButton
             android:id="@+id/rb3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40sp"
-            android:text="@string/other"
-            android:checked="false" />
+            android:text="@string/other" />
 
     </RadioGroup>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -146,10 +144,10 @@
             android:layout_height="150sp"
             android:layout_marginLeft="60sp"
             android:layout_marginTop="15sp"
-            android:background="#DAD4D4"
             android:clickable="true"
-            app:srcCompat="@android:drawable/ic_menu_gallery"
-            tools:srcCompat="@tools:sample/avatars" />
+            app:srcCompat="@drawable/ic_launcher_foreground"
+            tools:ignore="VectorDrawableCompat" />
+
     </LinearLayout>
 
     <Button

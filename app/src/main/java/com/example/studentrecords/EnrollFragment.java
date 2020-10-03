@@ -4,10 +4,15 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,14 +31,24 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Calendar;
-import java.util.Objects;
+import java.util.Date;
+
+import static android.os.Environment.getExternalStoragePublicDirectory;
+import static android.provider.MediaStore.*;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link EnrollFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateSetListener, OnItemSelectedListener{
 
     // TODO: Rename parameter arguments, choose names that match
@@ -79,6 +94,8 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
     private Broadcast_receiver b_reciever;
     private DatabaseHelper myDB;
     private View v;
+    public int age;
+    public LocalDate bod,cod;
     private LinearLayout fragment_layout;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -145,7 +162,7 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
         imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                Intent intent1 = new Intent(ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent1,0);
             }
         });
@@ -155,6 +172,7 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
             @Override
             public void onClick(View vi) {
                 selected_gender = (RadioButton) v.findViewById(radiogroup.getCheckedRadioButtonId());
+                Log.i("SAI",selected_gender.getText().toString());
                 if (
                         (name.length() == 0) ||
                         (roll_no.length() == 0) ||
@@ -168,8 +186,10 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
                             myDB.addData(
                             name.getText().toString(),
                             roll_no.getText().toString(),
-                            gender, qualification,
-                            dob.getText().toString() )
+                            selected_gender.getText().toString(),
+                            qualification,
+                            dob.getText().toString(),
+                            age)
                     ) {
                         name.setText("");
                         roll_no.setText("");
@@ -197,9 +217,13 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
     }
 
     //To parse the date into a String to set it on the EditText.
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         String date = dayOfMonth + "/" + (month+1) + "/" + year;
+        bod = LocalDate.of(year, (month+1), dayOfMonth);
+        cod = LocalDate.now();
+        age = Period.between(bod,cod).getYears();
         dob.setText(date);
     }
 
@@ -209,6 +233,51 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
         super.onActivityResult(requestCode, resultCode, data);
         Bitmap bitmap = (Bitmap) data.getExtras().get("data");
         imageview.setImageBitmap(bitmap);
+
+    }
+
+    String currentPhotoPath;
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalStoragePublicDirectory(MediaStore.Images);
+        File image = null;
+        try {
+            image = File.createTempFile(
+                    imageFileName,  /* prefix */
+                    ".jpg",         /* suffix */
+                    storageDir      /* directory */
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+
+    static final int REQUEST_TAKE_PHOTO = 1;
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(v.getContext(),
+                        "com.example.android.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
     }
 
     //To parse the selected dropdown item into a String to insert into SQLite DB.

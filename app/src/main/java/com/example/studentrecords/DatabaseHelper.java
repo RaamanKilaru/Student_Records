@@ -16,6 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL3 = "GENDER";
     public static final String COL4 = "QUALIFICATION";
     public static final String COL5 = "DOB";
+    public static final String COL6 = "AGE";
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, TABLE_NAME, null, 1);
@@ -24,7 +25,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (" + COL0 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL1 + " TEXT," + COL2 + " TEXT," + COL3 + " TEXT," + COL4 + " TEXT," + COL5 + " TEXT" + ")";
+                COL1 + " TEXT," + COL2 + " TEXT," + COL3 + " TEXT," + COL4 + " TEXT," + COL5 + " TEXT," + COL6 + " INTEGER" + ")";
         db.execSQL(createTable);
     }
 
@@ -33,7 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP IF TABLE EXISTS " + TABLE_NAME);
     }
 
-    public boolean addData(String name,String rollno,String gender,String qualification,String dob){
+    public boolean addData(String name, String rollno, String gender, String qualification, String dob, int age){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL1, name);
@@ -41,6 +42,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL3, gender);
         contentValues.put(COL4, qualification);
         contentValues.put(COL5, dob);
+        contentValues.put(COL6, age);
 
         long result = db.insert(TABLE_NAME,null, contentValues);
         if(result == -1){

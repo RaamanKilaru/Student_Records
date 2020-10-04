@@ -1,17 +1,21 @@
 package com.example.studentrecords;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -31,7 +35,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -39,16 +42,14 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.Calendar;
 import java.util.Date;
-
-import static android.os.Environment.getExternalStoragePublicDirectory;
-import static android.provider.MediaStore.*;
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link EnrollFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-@RequiresApi(api = Build.VERSION_CODES.O)
+//@RequiresApi(api = Build.VERSION_CODES.O)
 public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateSetListener, OnItemSelectedListener{
 
     // TODO: Rename parameter arguments, choose names that match
@@ -97,6 +98,10 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
     public int age;
     public LocalDate bod,cod;
     private LinearLayout fragment_layout;
+    public String currentPhotoPath;
+    public Uri contentUri = null;
+    static final int REQUEST_TAKE_PHOTO = 1;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,10 +123,11 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_enroll, container, false);
         fragment_layout = (LinearLayout) v.findViewById(R.id.enroll_frag);
+        verifyStoragePermissions(getActivity());
         name = (EditText) v.findViewById(R.id.name);
         imageview = (ImageView) v.findViewById(R.id.image_view);
         roll_no = (EditText) v.findViewById(R.id.roll_no);
@@ -162,8 +168,7 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
         imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent1,0);
+                dispatchTakePictureIntent();
             }
         });
 
@@ -172,13 +177,15 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
             @Override
             public void onClick(View vi) {
                 selected_gender = (RadioButton) v.findViewById(radiogroup.getCheckedRadioButtonId());
-                Log.i("SAI",selected_gender.getText().toString());
+                //Log.i("SAI",selected_gender.getText().toString());
+                //Log.i("SAI", "Saved Path : " + contentUri.toString());
                 if (
                         (name.length() == 0) ||
                         (roll_no.length() == 0) ||
                         (radiogroup.getCheckedRadioButtonId() == -1) ||
                         (qualification.equals("Select")) ||
-                        (dob.length() == 0)
+                        (dob.length() == 0) ||
+                        (contentUri == null)
                 ) {
                     Toast.makeText(vi.getContext(), "Sorry, You have to fill all the Fields. ", Toast.LENGTH_LONG).show();
                 } else {
@@ -189,7 +196,8 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
                             selected_gender.getText().toString(),
                             qualification,
                             dob.getText().toString(),
-                            age)
+                            contentUri.toString(),
+                            age )
                     ) {
                         name.setText("");
                         roll_no.setText("");
@@ -227,58 +235,96 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
         dob.setText(date);
     }
 
+
+
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(currentPhotoPath);
+        contentUri = Uri.fromFile(f);
+        Log.i("SAI","galleryAddPic() : " + contentUri.toString());
+        mediaScanIntent.setData(contentUri);
+        v.getContext().sendBroadcast(mediaScanIntent);
+        Log.i("SAI","Done with galleryAddPic().");
+        //imageview.setImageURI(contentUri);
+    }
+
+    private void setPic() {
+        // Get the dimensions of the View
+        int targetW = imageview.getWidth();
+        int targetH = imageview.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+
+        BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.max(1, Math.min(photoW/targetW, photoH/targetH));
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+        imageview.setImageBitmap(bitmap);
+    }
+
+    //Method that creates the Intent to capture image and initiates the method startActivityForResult().
+    public void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Create the File where the photo should be saved.
+        File photoFile = null;
+        try {
+            photoFile = createImageFile();
+        } catch (IOException ex) {
+            Log.i("SAI","Inside dispatchPictureIntent() call and got an IOException");
+            Toast.makeText(v.getContext(), "Error Creating Image File :(", Toast.LENGTH_SHORT).show();
+        }
+        // Continue only if the File was successfully created
+        if (photoFile != null) {
+            Log.i("SAI","photoFile.toString() : " + photoFile.toString());
+            Uri photoURI = FileProvider.getUriForFile(
+                    v.getContext(),
+                    "com.example.studentrecords.fileprovider",
+                    photoFile);
+            Log.i("SAI", "photoURI : " + photoURI.toString());
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+            startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+        }
+    }
+
     //To Display the captured image in the ImageView.
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-        imageview.setImageBitmap(bitmap);
-
+        //Log.i("SAI", "Inside onActivityResult() : " + requestCode + ", " + resultCode + ", " + RESULT_OK);
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
+            super.onActivityResult(requestCode, resultCode, data);
+            galleryAddPic();      /* Saving the picture to storage is done in onClick of Add button. */
+            setPic();  // Captured pictured is set to the image view with this method.
+        }
     }
 
-    String currentPhotoPath;
-    private File createImageFile() throws IOException {
-        // Create an image file name
+    //Creates a file in the internal storage to save the picture that is going to be captured.
+    public File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalStoragePublicDirectory(MediaStore.Images);
-        File image = null;
-        try {
-            image = File.createTempFile(
-                    imageFileName,  /* prefix */
-                    ".jpg",         /* suffix */
-                    storageDir      /* directory */
-            );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        //Creates a new file at storageDir with <imageFileName>.jpg as name of the file.
+        File image = new File(storageDir, imageFileName + ".jpg");
+        /*Log.i("SAI", "storageDir : " + storageDir.toString());
+        Log.i("SAI","imageFileName : " + imageFileName);
+        Log.i("SAI","image.toString() : " + image.toString());*/
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
         return image;
     }
 
 
-    static final int REQUEST_TAKE_PHOTO = 1;
-
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(v.getContext(),
-                        "com.example.android.fileprovider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-            }
-    }
 
     //To parse the selected dropdown item into a String to insert into SQLite DB.
     @Override
@@ -289,6 +335,32 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+
+    // Storage Access Permissions.
+    /*Even though we have given permissions in the manifest file we will have to give permission to
+     *write int the mobile storage during run-time. The below method makes sure if we have the
+     *required permissions to write. If we dont have them we will be promted to provide the permissions.
+     */
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+    public static void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
     }
 
 }

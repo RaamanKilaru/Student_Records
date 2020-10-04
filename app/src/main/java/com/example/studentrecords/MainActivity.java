@@ -1,9 +1,9 @@
 package com.example.studentrecords;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 
 
@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.i(TAG, "Inside oncreate() of Activity.");
-
         tabslayout = (TabLayout) findViewById(R.id.tabslayout);
 
         //Initialized the placeholder for fragments i.e. ViewPager.
@@ -55,4 +54,5 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
 }

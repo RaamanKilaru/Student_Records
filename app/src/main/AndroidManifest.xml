@@ -9,6 +9,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -19,6 +20,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Here is the extra inserted while trying Image Store feature. -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.studentrecords.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+            android:name="android.support.FILE_PROVIDER_PATHS"
+            android:resource="@xml/file_paths"/>
+        </provider>
 
         <!-- Should not register reciever explicitly because ACTION_SCREEN_OFF and ACTION_SCREEN_ON
              Broadcasts will not be recieved by the reciever. So, we have to register it dynamically

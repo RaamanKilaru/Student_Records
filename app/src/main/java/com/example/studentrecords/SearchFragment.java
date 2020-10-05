@@ -1,12 +1,21 @@
 package com.example.studentrecords;
 
+import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,10 +64,39 @@ public class SearchFragment extends Fragment {
         }
     }
 
+
+    private View v;
+    List<StudentInfo> myList;
+    DatabaseHelper myDB;
+    //Cursor listCursor;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false);
+        v = inflater.inflate(R.layout.fragment_search, container, false);
+
+        myList = new ArrayList<>();
+        myDB = new DatabaseHelper(v.getContext());
+        Cursor listCursor = myDB.getListContents();
+
+        if(listCursor.getCount() == 0){
+            Toast.makeText(v.getContext(),"The DataBase is Empty :(",Toast.LENGTH_LONG).show();
+        } else {
+            while (listCursor.moveToNext()){
+                myList.add(new StudentInfo(
+                        listCursor.getString(1),
+                        listCursor.getString(2),
+                        listCursor.getString(3),
+                        listCursor.getString(4),
+                        listCursor.getString(5),
+                        listCursor.getString(6)
+                ));
+            }
+        }
+
+        RecyclerView myRv = (RecyclerView) v.findViewById(R.id.recycler_view_id);
+        RecyclerViewAdapter myAdapter = new RecyclerViewAdapter(v.getContext(), myList);
+        myRv.setLayoutManager(new GridLayoutManager(v.getContext(),3));
+        myRv.setAdapter(myAdapter);
+        return v;
     }
 }

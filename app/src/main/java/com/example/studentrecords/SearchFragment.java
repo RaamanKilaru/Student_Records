@@ -114,13 +114,13 @@ public class SearchFragment extends Fragment {
         Log.i(TAG,"Inside onResume().");
         myList = new ArrayList<>();
         myDB = new DatabaseHelper(v.getContext());
-        /*fab = (FloatingActionButton) v.findViewById(R.id.fab);
+        fab = (FloatingActionButton) v.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onResume();
             }
-        });*/
+        });
         final SwipeRefreshLayout swipe_refresh = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh);
         Cursor listCursor = myDB.getListContents();
 
@@ -150,7 +150,7 @@ public class SearchFragment extends Fragment {
         swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                myAdapter.notifyDataSetChanged();
+                onResume();
                 swipe_refresh.setRefreshing(false);
             }
         });

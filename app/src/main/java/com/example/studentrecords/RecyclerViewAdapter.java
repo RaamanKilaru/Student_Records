@@ -1,5 +1,6 @@
 package com.example.studentrecords;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import java.util.zip.Inflater;
@@ -45,6 +47,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             public void onClick(View v) {
                 Log.i("SAI","item clicked");
                 Intent preview = new Intent(v.getContext(),StudentInfoView.class);
+
+                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) v.getContext(),v.findViewById(R.id.image_card_view),"myImage");
+
                 preview.putExtra("image_uri", mData.get(position).getImageUri());
                 preview.putExtra("name", mData.get(position).get_Name());
                 preview.putExtra("roll_no", mData.get(position).getRoll_no());
@@ -52,7 +57,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 preview.putExtra("qualification", mData.get(position).getQualification());
                 preview.putExtra("d_o_b", mData.get(position).getDob());
                 Log.i("recycler_tag", String.valueOf(preview.hasExtra("d_o_b")));
-                v.getContext().startActivity(preview);
+                v.getContext().startActivity(preview,optionsCompat.toBundle());
             }
         });
 

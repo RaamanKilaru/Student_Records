@@ -31,7 +31,7 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <!--  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
           android:id="@+id/fab"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -47,5 +47,6 @@
           app:layout_constraintHorizontal_bias="0.954"
           app:layout_constraintStart_toStartOf="@+id/recycler_view_id"
           app:layout_constraintTop_toTopOf="parent"
-          app:layout_constraintVertical_bias="0.976" /> -->
+          app:layout_constraintVertical_bias="0.976" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

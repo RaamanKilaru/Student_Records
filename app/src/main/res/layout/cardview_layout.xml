@@ -20,6 +20,7 @@
             android:layout_height="160dp"
             android:id="@+id/image_card_view"
             android:scaleType="centerCrop"
+            android:transitionName="myImage"
             android:background="#DADD" />
 
         <TextView

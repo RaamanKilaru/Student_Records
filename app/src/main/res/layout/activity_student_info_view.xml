@@ -27,6 +27,7 @@
         android:layout_height="350dp"
         android:layout_weight="50"
         android:layout_margin="10dp"
+        android:transitionName="myImage"
         android:id="@+id/display_image" />
 
     <LinearLayout

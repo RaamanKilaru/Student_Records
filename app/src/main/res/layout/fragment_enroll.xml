@@ -145,7 +145,7 @@
             android:layout_marginLeft="60sp"
             android:layout_marginTop="15sp"
             android:clickable="true"
-            app:srcCompat="@drawable/ic_launcher_foreground"
+            app:srcCompat="@drawable/ic_baseline_android_24"
             tools:ignore="VectorDrawableCompat" />
 
     </LinearLayout>

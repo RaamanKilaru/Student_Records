@@ -1,18 +1,25 @@
-package com.example.studentrecords;
+    package com.example.studentrecords;
 
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +30,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class SearchFragment extends Fragment {
-
+    private static String TAG = "SearchFragment";
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -58,6 +65,7 @@ public class SearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG,"Inside onCreate().");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -68,14 +76,49 @@ public class SearchFragment extends Fragment {
     private View v;
     List<StudentInfo> myList;
     DatabaseHelper myDB;
+    FloatingActionButton fab;
     //Cursor listCursor;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_search, container, false);
+        Log.i(TAG,"Inside onCreateView().");
 
+        return v;
+    }
+
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        Log.i(TAG,"Inside onAttach().");
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.i(TAG,"Inside onActivityCreated().");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i(TAG,"Inside onStart().");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG,"Inside onResume().");
         myList = new ArrayList<>();
         myDB = new DatabaseHelper(v.getContext());
+        fab = (FloatingActionButton) v.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onResume();
+            }
+        });
         Cursor listCursor = myDB.getListContents();
 
         if(listCursor.getCount() == 0){
@@ -94,9 +137,38 @@ public class SearchFragment extends Fragment {
         }
 
         RecyclerView myRv = (RecyclerView) v.findViewById(R.id.recycler_view_id);
-        RecyclerViewAdapter myAdapter = new RecyclerViewAdapter(v.getContext(), myList);
+        RecyclerViewAdapter myAdapter = new RecyclerViewAdapter(getActivity(), myList);
         myRv.setLayoutManager(new GridLayoutManager(v.getContext(),3));
         myRv.setAdapter(myAdapter);
-        return v;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i(TAG,"Inside onPause().");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i(TAG,"Inside onStop().");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.i(TAG,"Inside onDestroyView().");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG,"Inside onDestroy().");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.i(TAG,"Inside onDetach().");
     }
 }

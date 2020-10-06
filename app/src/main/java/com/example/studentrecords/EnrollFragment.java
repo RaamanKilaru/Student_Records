@@ -204,7 +204,7 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
                         spinner.setSelection(0);
                         dob.setText("");
                         imageview.setImageBitmap(null);
-                        imageview.setBackgroundResource(R.drawable.ic_launcher_foreground);
+                        imageview.setBackgroundResource(R.drawable.ic_baseline_android_24);
                         Toast.makeText(vi.getContext(), "Successful!!", Toast.LENGTH_LONG).show();
                     }else {
                         Toast.makeText(vi.getContext(), "Sorry Something went wrong :(", Toast.LENGTH_LONG).show();

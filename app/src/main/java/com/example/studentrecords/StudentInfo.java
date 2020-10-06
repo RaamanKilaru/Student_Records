@@ -40,28 +40,4 @@ public class StudentInfo {
     public String getImageUri() {
         return imageUri;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setRoll_no(String roll_no) {
-        this.roll_no = roll_no;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public void setQualification(String qualification) {
-        this.qualification = qualification;
-    }
-
-    public void setDob(String dob) {
-        this.dob = dob;
-    }
-
-    public void setImageUri(String imageUri) {
-        this.imageUri = imageUri;
-    }
 }

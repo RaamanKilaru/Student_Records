@@ -25,6 +25,7 @@
     <string name="gender">Gender :</string>
     <string name="other">Other</string>
     <string name="upload_picture">Upload Picture :</string>
+    <string name="refresh">Refresh</string>
 
     <string-array name="qualifications">
         <item>Select</item>

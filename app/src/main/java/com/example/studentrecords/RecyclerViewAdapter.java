@@ -1,14 +1,18 @@
 package com.example.studentrecords;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import java.util.zip.Inflater;
@@ -32,10 +36,34 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Uri contenturi = Uri.parse(mData.get(position).getImageUri());
-        holder.student_image.setImageURI(contenturi);
+    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+        holder.student_image.setImageURI(Uri.parse(mData.get(position).getImageUri()));
         holder.student_name.setText(mData.get(position).get_Name());
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("SAI","item clicked");
+                Intent preview = new Intent(v.getContext(),StudentInfoView.class);
+                preview.putExtra("image_uri", mData.get(position).getImageUri());
+                preview.putExtra("name", mData.get(position).get_Name());
+                preview.putExtra("roll_no", mData.get(position).getRoll_no());
+                preview.putExtra("gender", mData.get(position).getGender());
+                preview.putExtra("qualification", mData.get(position).getQualification());
+                preview.putExtra("d_o_b", mData.get(position).getDob());
+                Log.i("recycler_tag", String.valueOf(preview.hasExtra("d_o_b")));
+                v.getContext().startActivity(preview);
+            }
+        });
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Toast.makeText(view.getContext(),mData.get(position).getDob(),Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
     }
 
     @Override
@@ -46,11 +74,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView student_name;
         ImageView student_image;
-
+        CardView cardView;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             student_image = (ImageView) itemView.findViewById(R.id.image_card_view);
             student_name = (TextView) itemView.findViewById(R.id.text_card_view);
+            cardView = (CardView) itemView.findViewById(R.id.card_view);
 
         }
     }

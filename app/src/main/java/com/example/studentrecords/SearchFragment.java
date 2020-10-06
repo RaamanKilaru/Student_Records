@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -77,6 +78,7 @@ public class SearchFragment extends Fragment {
     List<StudentInfo> myList;
     DatabaseHelper myDB;
     FloatingActionButton fab;
+    int i = 0;
     //Cursor listCursor;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -112,17 +114,21 @@ public class SearchFragment extends Fragment {
         Log.i(TAG,"Inside onResume().");
         myList = new ArrayList<>();
         myDB = new DatabaseHelper(v.getContext());
-        fab = (FloatingActionButton) v.findViewById(R.id.fab);
+        /*fab = (FloatingActionButton) v.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onResume();
             }
-        });
+        });*/
+        final SwipeRefreshLayout swipe_refresh = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh);
         Cursor listCursor = myDB.getListContents();
 
         if(listCursor.getCount() == 0){
+            if(i == 0){
             Toast.makeText(v.getContext(),"The DataBase is Empty :(",Toast.LENGTH_LONG).show();
+            i++;
+            }
         } else {
             while (listCursor.moveToNext()){
                 myList.add(new StudentInfo(
@@ -137,9 +143,17 @@ public class SearchFragment extends Fragment {
         }
 
         RecyclerView myRv = (RecyclerView) v.findViewById(R.id.recycler_view_id);
-        RecyclerViewAdapter myAdapter = new RecyclerViewAdapter(getActivity(), myList);
+        final RecyclerViewAdapter myAdapter = new RecyclerViewAdapter(getActivity(), myList);
         myRv.setLayoutManager(new GridLayoutManager(v.getContext(),3));
         myRv.setAdapter(myAdapter);
+
+        swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                myAdapter.notifyDataSetChanged();
+                swipe_refresh.setRefreshing(false);
+            }
+        });
     }
 
     @Override

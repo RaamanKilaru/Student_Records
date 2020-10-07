@@ -1,27 +1,24 @@
     package com.example.studentrecords;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.Adapter;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +27,7 @@ import java.util.List;
  * Use the {@link SearchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private static String TAG = "SearchFragment";
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -75,16 +72,41 @@ public class SearchFragment extends Fragment {
 
 
     private View v;
-    List<StudentInfo> myList;
-    DatabaseHelper myDB;
-    FloatingActionButton fab;
+    private List<StudentInfo> myList;
+    private DatabaseHelper myDB;
+    private FloatingActionButton fab;
+    private Spinner sort_spinner;
+    //private ArrayAdapter<CharSequence> sort_adapter;
+    private Cursor listCursor;
+    public String sorter = "";
     int i = 0;
+    public String[] sortlist = {"Added Order", "Name", "Age"};
+
+    RecyclerView myRv;
+    RecyclerViewAdapter myAdapter;
+
     //Cursor listCursor;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_search, container, false);
         Log.i(TAG,"Inside onCreateView().");
+
+        myRv = (RecyclerView) v.findViewById(R.id.recycler_view_id);
+
+        //Spinner for Qualifications.
+        sort_spinner = (Spinner) v.findViewById(R.id.sort_filter);
+        sort_spinner.setOnItemSelectedListener(this);
+        ArrayAdapter sort_adapter = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,sortlist);
+        sort_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sort_spinner.setAdapter(sort_adapter);
+        /*sort_adapter = ArrayAdapter.createFromResource(
+                getContext(),
+                sortlist,
+                android.R.layout.simple_spinner_item);
+        sort_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sort_spinner.setAdapter(sort_adapter);*/
+
 
         return v;
     }
@@ -114,36 +136,28 @@ public class SearchFragment extends Fragment {
         Log.i(TAG,"Inside onResume().");
         myList = new ArrayList<>();
         myDB = new DatabaseHelper(v.getContext());
-        fab = (FloatingActionButton) v.findViewById(R.id.fab);
+        /*fab = (FloatingActionButton) v.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onResume();
             }
-        });
+        });*/
         final SwipeRefreshLayout swipe_refresh = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh);
-        Cursor listCursor = myDB.getListContents();
+        listCursor = myDB.getListContents();
 
-        if(listCursor.getCount() == 0){
-            if(i == 0){
-            Toast.makeText(v.getContext(),"The DataBase is Empty :(",Toast.LENGTH_LONG).show();
-            i++;
-            }
-        } else {
-            while (listCursor.moveToNext()){
-                myList.add(new StudentInfo(
-                        listCursor.getString(1),
-                        listCursor.getString(2),
-                        listCursor.getString(3),
-                        listCursor.getString(4),
-                        listCursor.getString(5),
-                        listCursor.getString(6)
-                ));
-            }
+        if(sorter.equals("Added Order")){
+            listCursor = myDB.getListContents();
+            addTomyList(listCursor);
+        }else if(sorter.equals("Name")){
+            listCursor = myDB.getListContents_name_sorted();
+            addTomyList(listCursor);
+        }else if(sorter.equals("Age")){
+            listCursor = myDB.getListContents_age_sorted();
+            addTomyList(listCursor);
         }
 
-        RecyclerView myRv = (RecyclerView) v.findViewById(R.id.recycler_view_id);
-        final RecyclerViewAdapter myAdapter = new RecyclerViewAdapter(getActivity(), myList);
+        myAdapter = new RecyclerViewAdapter(getActivity(), myList);
         myRv.setLayoutManager(new GridLayoutManager(v.getContext(),3));
         myRv.setAdapter(myAdapter);
 
@@ -151,9 +165,44 @@ public class SearchFragment extends Fragment {
             @Override
             public void onRefresh() {
                 onResume();
+                //myAdapter.notifyDataSetChanged();
                 swipe_refresh.setRefreshing(false);
             }
         });
+    }
+
+    public void addTomyList(Cursor listCursor){
+        if (listCursor.getCount() == 0) {
+            if (i == 0) {
+                Toast.makeText(v.getContext(), "The DataBase is Empty :(", Toast.LENGTH_LONG).show();
+                i++;
+            }
+        } else {
+            while (listCursor.moveToNext()) {
+                myList.add(new StudentInfo(
+                        listCursor.getString(1),
+                        listCursor.getString(2),
+                        listCursor.getString(3),
+                        listCursor.getString(4),
+                        listCursor.getString(5),
+                        listCursor.getString(6),
+                        listCursor.getString(7)
+                ));
+            }
+        }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        //this.sorter = parent.getItemAtPosition(position).toString();
+        this.sorter = sortlist[position];
+        Log.i("sorter",sorter);
+        onResume();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
     @Override
@@ -185,4 +234,5 @@ public class SearchFragment extends Fragment {
         super.onDetach();
         Log.i(TAG,"Inside onDetach().");
     }
+
 }

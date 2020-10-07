@@ -59,4 +59,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data = db.rawQuery("SELECT * FROM " + TABLE_NAME,null);
         return data;
     }
+
+    public Cursor getListContents_age_sorted(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY " + COL7,null);
+        return data;
+    }
+
+    public Cursor getListContents_name_sorted(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT * FROM " + TABLE_NAME + " ORDER BY " + COL1,null);
+        return data;
+    }
 }

@@ -11,13 +11,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
-import java.util.zip.Inflater;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
     private Context mContext;
@@ -48,6 +46,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 Log.i("SAI","item clicked");
                 Intent preview = new Intent(v.getContext(),StudentInfoView.class);
 
+                //Shared View Transition Animation
                 ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) v.getContext(),v.findViewById(R.id.image_card_view),"myImage");
 
                 preview.putExtra("image_uri", mData.get(position).getImageUri());
@@ -64,7 +63,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                Toast.makeText(view.getContext(),mData.get(position).getDob(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(),"DOB : " + mData.get(position).getDob() + "; Age : " + mData.get(position).getAge(),Toast.LENGTH_SHORT).show();
                 return true;
             }
         });

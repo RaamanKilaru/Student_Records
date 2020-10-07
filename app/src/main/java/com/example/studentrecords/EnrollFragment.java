@@ -88,18 +88,18 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
     private Button addbutton;
     private RadioGroup radiogroup;
     private RadioButton selected_gender;
-    private String gender,qualification;
     private ImageView imageview;
     private Spinner spinner;
-    private ArrayAdapter<CharSequence> adapter;
+    private ArrayAdapter adapter;
     private Broadcast_receiver b_reciever;
     private DatabaseHelper myDB;
     private View v;
     public int age;
     public LocalDate bod,cod;
     private LinearLayout fragment_layout;
-    public String currentPhotoPath;
+    public String currentPhotoPath,qualification;
     public Uri contentUri = null;
+    public String[] sortlistQ = {"Select","SSC","Intermediate","B.Tech","B.Tech(Hons.)","M.Tech","Ph.D"};
     static final int REQUEST_TAKE_PHOTO = 1;
 
     @Override
@@ -137,13 +137,10 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
 
         //Spinner for Qualifications.
         spinner = (Spinner) v.findViewById(R.id.qualifications);
-        adapter = ArrayAdapter.createFromResource(
-                getContext(),
-                R.array.qualifications,
-                android.R.layout.simple_spinner_item);
+        spinner.setOnItemSelectedListener(this);
+        adapter = new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,sortlistQ);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
 
         dob = (EditText) v.findViewById(R.id.d_o_b);
         imageview = (ImageView) v.findViewById(R.id.image_view);
@@ -182,7 +179,7 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
                 if (
                         (name.length() == 0) ||
                         (roll_no.length() == 0) ||
-                        (radiogroup.getCheckedRadioButtonId() == -1) ||
+                        /*(radiogroup.getCheckedRadioButtonId() == -1) ||*/
                         (qualification.equals("Select")) ||
                         (dob.length() == 0) ||
                         (contentUri == null)
@@ -306,6 +303,8 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
             super.onActivityResult(requestCode, resultCode, data);
             galleryAddPic();      /* Saving the picture to storage is done in onClick of Add button. */
             setPic();  // Captured pictured is set to the image view with this method.
+            //Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            //imageview.setImageBitmap(bitmap);
         }
     }
 
@@ -329,7 +328,8 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
     //To parse the selected dropdown item into a String to insert into SQLite DB.
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        this.qualification = parent.getItemAtPosition(position).toString();
+        //this.qualification = parent.getItemAtPosition(position).toString();
+        this.qualification = sortlistQ[position];
     }
 
     @Override

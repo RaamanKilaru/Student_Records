@@ -7,14 +7,16 @@ public class StudentInfo {
     private String qualification;
     private String dob;
     private String imageUri;
+    private String age;
 
-    public StudentInfo(String name, String roll_no, String gender, String qualification, String dob, String imageUri) {
+    public StudentInfo(String name, String roll_no, String gender, String qualification, String dob, String imageUri, String age) {
         this.name = name;
         this.roll_no = roll_no;
         this.gender = gender;
         this.qualification = qualification;
         this.dob = dob;
         this.imageUri = imageUri;
+        this.age = age;
     }
 
     public String get_Name() {
@@ -35,6 +37,10 @@ public class StudentInfo {
 
     public String getDob() {
         return dob;
+    }
+
+    public String getAge() {
+        return age;
     }
 
     public String getImageUri() {

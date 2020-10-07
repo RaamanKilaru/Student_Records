@@ -26,8 +26,9 @@
     <string name="other">Other</string>
     <string name="upload_picture">Upload Picture :</string>
     <string name="refresh">Refresh</string>
+    <string name="sort_by">Sort By :</string>
 
-    <string-array name="qualifications">
+    <!--<string-array name="qualifications">
         <item>Select</item>
         <item>SSC</item>
         <item>Intermediate</item>
@@ -36,5 +37,11 @@
         <item>M.Tech</item>
         <item>Ph.D</item>
     </string-array>
+
+    <string-array name="sort_items">
+        <item>Parameter</item>
+        <item>Name</item>
+        <item>Age</item>
+    </string-array>-->
 
 </resources>

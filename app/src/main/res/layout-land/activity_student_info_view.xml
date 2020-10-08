@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:textAlignment="center"
+    android:weightSum="100"
+    tools:context=".StudentInfoView"
+    android:gravity="center_horizontal">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+      <!-- <ImageButton
+            android:id="@+id/back_button"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:background="#6200EE"
+            android:src="@drawable/ic_baseline_arrow_back_24" /> -->
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="350dp"
+        android:layout_weight="50"
+        android:layout_margin="10dp"
+        android:transitionName="myImage"
+        android:id="@+id/display_image" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="10"
+        android:orientation="horizontal"
+        android:textAlignment="center"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:text="@string/name"
+            android:textSize="20dp"
+            android:layout_margin="10dp"
+            android:gravity="center_vertical"
+            android:textColor="#000"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/display_name"
+            android:textSize="20dp"
+            android:layout_margin="10dp"
+            android:gravity="center_vertical"
+            android:textColor="#000"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="10"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:text="@string/roll_number"
+            android:textSize="20dp"
+            android:layout_margin="10dp"
+            android:gravity="center_vertical"
+            android:textColor="#000"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/display_roll_no"
+            android:textSize="20dp"
+            android:layout_margin="10dp"
+            android:gravity="center_vertical"
+            android:textColor="#000"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="10"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:text="@string/gender"
+            android:textSize="20dp"
+            android:layout_margin="10dp"
+            android:gravity="center_vertical"
+            android:textColor="#000"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/display_gender"
+            android:textSize="20dp"
+            android:layout_margin="10dp"
+            android:gravity="center_vertical"
+            android:textColor="#000"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="10"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:text="@string/qualification"
+            android:textSize="20dp"
+            android:layout_margin="10dp"
+            android:gravity="center_vertical"
+            android:textColor="#000"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/display_qualification"
+            android:textSize="20dp"
+            android:layout_margin="10dp"
+            android:gravity="center_vertical"
+            android:textColor="#000"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="10"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:text="@string/date_of_birth"
+            android:textSize="20dp"
+            android:layout_margin="10dp"
+            android:gravity="center_vertical"
+            android:textColor="#000"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/display_dob"
+            android:textSize="20dp"
+            android:layout_margin="10dp"
+            android:gravity="center_vertical"
+            android:textColor="#000"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        />
+
+</LinearLayout>
+</ScrollView>

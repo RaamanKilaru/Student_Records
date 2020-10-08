@@ -234,12 +234,14 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
 
 
 
-    private void galleryAddPic() {
+    //private void galleryAddPic(Uri picUri) {
+    private void galleryAddPic(){
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File f = new File(currentPhotoPath);
         contentUri = Uri.fromFile(f);
         Log.i("SAI","galleryAddPic() : " + contentUri.toString());
         mediaScanIntent.setData(contentUri);
+        //mediaScanIntent.setData(picUri);
         v.getContext().sendBroadcast(mediaScanIntent);
         Log.i("SAI","Done with galleryAddPic().");
         //imageview.setImageURI(contentUri);
@@ -301,7 +303,9 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
         //Log.i("SAI", "Inside onActivityResult() : " + requestCode + ", " + resultCode + ", " + RESULT_OK);
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
             super.onActivityResult(requestCode, resultCode, data);
-            galleryAddPic();      /* Saving the picture to storage is done in onClick of Add button. */
+            //Uri picUri = (Uri) getActivity().getIntent().getExtras().get(MediaStore.EXTRA_OUTPUT);
+            //galleryAddPic(picUri);      /* Saving the picture to storage is done in onClick of Add button. */
+            galleryAddPic();
             setPic();  // Captured pictured is set to the image view with this method.
             //Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             //imageview.setImageBitmap(bitmap);

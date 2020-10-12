@@ -3,14 +3,18 @@ package com.example.studentrecords;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
@@ -101,10 +105,12 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
     public Uri contentUri = null;
     public String[] sortlistQ = {"Select","SSC","Intermediate","B.Tech","B.Tech(Hons.)","M.Tech","Ph.D"};
     static final int REQUEST_TAKE_PHOTO = 1;
+    private static final String TAG = "SAI";/*"EnrollFragment";*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG,"Inside onCreate() of Enroll Tab.");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -126,6 +132,7 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_enroll, container, false);
+        Log.i(TAG,"Inside onCreateView() of Enroll Tab.");
         fragment_layout = (LinearLayout) v.findViewById(R.id.enroll_frag);
         verifyStoragePermissions(getActivity());
         name = (EditText) v.findViewById(R.id.name);
@@ -367,4 +374,64 @@ public class EnrollFragment extends Fragment implements DatePickerDialog.OnDateS
         }
     }
 
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        Log.i(TAG,"Inside onAttach() of Enroll Tab.");
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.i(TAG,"Inside onActivityCreated() of Enroll Tab.");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i(TAG,"Inside onStart() of Enroll Tab.");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG,"Inside onResume() of Enroll Tab.");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i(TAG,"Inside onPause() of Enroll Tab.");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.i(TAG,"Inside onStop() of Enroll Tab.");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.i(TAG,"Inside onDestroyView() of Enroll Tab.");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG,"Inside onDestroy() of Enroll Tab.");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.i(TAG,"Inside onDetach() of Enroll Tab.");
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Log.i(TAG,"Inside onConfigurationChanged() of Enroll Fragment.");
+    }
 }

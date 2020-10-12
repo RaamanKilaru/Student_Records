@@ -1,7 +1,10 @@
 package com.example.studentrecords;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
@@ -11,13 +14,13 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabslayout;
     ViewPager viewpager;
     PagerAdapter pageradapter;
-    private static final String TAG = "myActivity";
+    private static final String TAG = "SAI";/*"myActivity";*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.i(TAG, "Inside oncreate() of Activity.");
+        Log.i(TAG, "Inside onCreate() of Main Activity.");
         tabslayout = (TabLayout) findViewById(R.id.tabslayout);
 
         //Initialized the placeholder for fragments i.e. ViewPager.
@@ -55,4 +58,45 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(TAG, "Inside onStart() of Main Activity.");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(TAG, "Inside onStop() of Main Activity.");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "Inside onDestroy() of Main Activity.");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(TAG, "Inside onPause() of Main Activity.");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(TAG, "Inside onResume() of Main Activity.");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i(TAG, "Inside onRestart() of Main Activity.");
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Log.i(TAG,"Inside onConfigurationChanged() of Main Activity.");
+    }
 }

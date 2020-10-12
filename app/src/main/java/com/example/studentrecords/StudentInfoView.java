@@ -1,8 +1,10 @@
 package com.example.studentrecords;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActionBar;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,11 +17,13 @@ public class StudentInfoView extends AppCompatActivity {
 
     ImageView image;
     TextView name, rollnum, gender, qualification, dateofbirth;
+    private static final String TAG = "SAI";/*"StudentInfoView";*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_info_view);
+        Log.i(TAG,"Inside onCreate() of StudentInfoView.");
 
         name = (TextView) findViewById(R.id.display_name);
         rollnum = (TextView) findViewById(R.id.display_roll_no);
@@ -52,5 +56,43 @@ public class StudentInfoView extends AppCompatActivity {
         this.gender.setText(gender);
         this.qualification.setText(qualification);
         dateofbirth.setText(dob);
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(TAG,"Inside onStart() of StudentInfoView.");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(TAG,"Inside onStop() of StudentInfoView.");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG,"Inside onDestroy() of StudentInfoView.");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i(TAG,"Inside onPause() of StudentInfoView.");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(TAG,"Inside onResume() of StudentInfoView.");
+    }
+
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Log.i(TAG,"Inside onConfigurationChanged() of StudentInfoView.");
     }
 }

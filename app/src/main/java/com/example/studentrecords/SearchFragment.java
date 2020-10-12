@@ -1,6 +1,7 @@
     package com.example.studentrecords;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -28,7 +29,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class SearchFragment extends Fragment implements AdapterView.OnItemSelectedListener {
-    private static String TAG = "SearchFragment";
+    private static String TAG = "SAI";/*"SearchFragment";*/
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -63,7 +64,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG,"Inside onCreate().");
+        Log.i(TAG,"Inside onCreate() of SearchFragment.");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -90,7 +91,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_search, container, false);
-        Log.i(TAG,"Inside onCreateView().");
+        Log.i(TAG,"Inside onCreateView() of SearchFragment.");
 
         myRv = (RecyclerView) v.findViewById(R.id.recycler_view_id);
 
@@ -115,25 +116,25 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        Log.i(TAG,"Inside onAttach().");
+        Log.i(TAG,"Inside onAttach() of SearchFragment.");
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.i(TAG,"Inside onActivityCreated().");
+        Log.i(TAG,"Inside onActivityCreated() of SearchFragment.");
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(TAG,"Inside onStart().");
+        Log.i(TAG,"Inside onStart() of SearchFragment.");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.i(TAG,"Inside onResume().");
+        Log.i(TAG,"Inside onResume() of SearchFragment.");
         myList = new ArrayList<>();
         myDB = new DatabaseHelper(v.getContext());
         /*fab = (FloatingActionButton) v.findViewById(R.id.fab);
@@ -197,7 +198,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
         //this.sorter = parent.getItemAtPosition(position).toString();
         this.sorter = sortlist[position];
         Log.i("sorter",sorter);
-        onResume();
+            onResume();
     }
 
     @Override
@@ -208,31 +209,37 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemSelect
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG,"Inside onPause().");
+        Log.i(TAG,"Inside onPause() of SearchFragment.");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG,"Inside onStop().");
+        Log.i(TAG,"Inside onStop() of SearchFragment.");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG,"Inside onDestroyView().");
+        Log.i(TAG,"Inside onDestroyView() of SearchFragment.");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i(TAG,"Inside onDestroy().");
+        Log.i(TAG,"Inside onDestroy() of SearchFragment.");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        Log.i(TAG,"Inside onDetach().");
+        Log.i(TAG,"Inside onDetach() of SearchFragment.");
     }
 
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Log.i(TAG,"Inside onConfigurationChanged() of Search Fragment.");
+    }
 }

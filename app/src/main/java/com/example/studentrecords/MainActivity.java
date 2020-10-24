@@ -1,9 +1,11 @@
 package com.example.studentrecords;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
-
+import android.widget.TextView;
+import android.app.ExampleServiceManager;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -14,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabslayout;
     ViewPager viewpager;
     PagerAdapter pageradapter;
+    TextView servicetext;
     private static final String TAG = "SAI";/*"myActivity";*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +25,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.i(TAG, "Inside onCreate() of Main Activity.");
         tabslayout = (TabLayout) findViewById(R.id.tabslayout);
+
+
+        ExampleServiceManager examplemanager = (ExampleServiceManager) getApplicationContext().getSystemService(Context.EXAMPLE_SERVICE);
+        String message = examplemanager.getServiceText();
+
+        servicetext = (TextView) findViewById(R.id.servicetext);
+        servicetext.setText(message);
 
         //Initialized the placeholder for fragments i.e. ViewPager.
         viewpager = (ViewPager) findViewById(R.id.pager);
